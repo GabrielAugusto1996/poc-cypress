@@ -5,9 +5,9 @@ Documentação: https://docs.cypress.io/guides/overview/why-cypress.html#Cypress
 
 ### Requisitos para configuração do Ambiente
 
-1 - NPM - Qualquer versão
-2 - NODE - Qualquer versão
-3 - Cypress - Versão 3.6.0 - Comando: npm install cypress@3.6.0
+* 1 - NPM - Qualquer versão
+* 2 - NODE - Qualquer versão
+* 3 - Cypress - Versão 3.6.0 - Comando: npm install cypress@3.6.0
 
 ### Como executar o Cypress
 
