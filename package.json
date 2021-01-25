@@ -1,0 +1,24 @@
+{
+  "name": "poc-cypress",
+  "version": "1.0.0",
+  "description": "Criação de uma POC utilizando a ferramenta Cypress",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cypress:open": "cypress open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GabrielAugusto1996/poc-cypress.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GabrielAugusto1996/poc-cypress/issues"
+  },
+  "homepage": "https://github.com/GabrielAugusto1996/poc-cypress#readme",
+  "dependencies": {
+    "cypress": "^3.6.0"
+  }
+}
