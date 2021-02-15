@@ -16,4 +16,19 @@ describe('Work with basic elements', () => {
         cy.get('.facilAchar')
             .should('have.text', 'Cuidado onde clica, muitas armadilhas...')
     })
+
+    it('Links', () => {
+        cy.visit('https://wcaquino.me/cypress/componentes.html')
+
+        cy.contains('Voltar')
+            .click()
+
+        cy.get('#resultado')
+            .should('have.text', 'Voltou!')
+
+        cy.reload();
+
+        cy.get('#resultado')
+            .should('have.not.text', 'Voltou!')
+    })
 })
