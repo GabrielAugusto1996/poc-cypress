@@ -1,9 +1,19 @@
 /// <reference types = "cypress" />
 
 describe('Work with basic elements', () => {
-    it('Text', () => {
+    
+    //Executa antes de todos os testes
+    before(() => {
         cy.visit('https://wcaquino.me/cypress/componentes.html')
 
+    })
+
+    //Executa antes de cada um dos testes
+    beforeEach(() => {
+        cy.reload()
+    })
+
+    it('Text', () => {
         cy.get('body')
             .should('contain', 'Cuidado')
 
@@ -18,8 +28,6 @@ describe('Work with basic elements', () => {
     })
 
     it('Links', () => {
-        cy.visit('https://wcaquino.me/cypress/componentes.html')
-
         cy.contains('Voltar')
             .click()
 
