@@ -1,7 +1,7 @@
 /// <reference types = "cypress" />
 
 describe('Cypress basics', () => {
-    it ('Should visit a page and assert title', () => {
+    it('Should visit a page and assert title', () => {
        cy.visit('https://wcaquino.me/cypress/componentes.html')
 
        cy.title().should('be.equal', 'Campo de Treinamento')
@@ -16,5 +16,13 @@ describe('Cypress basics', () => {
         //TODO: Desafio Cypress:
         //TODO: Imprimir o log no console
         //TODO: Escrever o log em um campo de texto
+    })
+
+    it.only('Should find and interact with an element', () => {
+        cy.visit('https://wcaquino.me/cypress/componentes.html')
+
+        cy.get('#buttonSimple')
+          .click()
+          .should('have.value', 'Obrigado!')
     })
 })
