@@ -12,10 +12,9 @@ describe('Cypress basics', () => {
         .should('be.equal', 'Campo de Treinamento')
         .and('contain', 'Campo')
 
-
-        //TODO: Desafio Cypress:
-        //TODO: Imprimir o log no console
-        //TODO: Escrever o log em um campo de texto
+        cy.title().then(title => {
+            console.log(title)
+        })
     })
 
     it('Should find and interact with an element', () => {
