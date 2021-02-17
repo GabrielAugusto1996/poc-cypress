@@ -25,7 +25,6 @@ Adicione o seguinte script no seu arquivo de **package.json**:
 
 Em seguida execute o comando: npm run cypress:open
 
-
 ### Curiosidades
 
 Retry: Os comandos do Cypress executa automaticamente várias tentativas até que a assertiva funcione ou que de timeout.
