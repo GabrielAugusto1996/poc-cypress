@@ -51,13 +51,10 @@ describe('Esperas...', () => {
         cy.get('#buttonDelay')
             .click()
 
-        cy.get('#novoCampo', { timeout: 6000 })
-            .should('exist')
-
         cy.get('#buttonListDOM')
             .click()
 
         cy.get('#lista li span', { timeout: 30000 })
-            .should('contain', 'Item 2')
+            .should('have.length', 2)
     })
 })
