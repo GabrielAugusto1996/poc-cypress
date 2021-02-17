@@ -47,7 +47,7 @@ describe('Esperas...', () => {
 
     })
 
-    it.only('Uso do timeout', () => {
+    it('Uso do timeout', () => {
         cy.get('#buttonDelay')
             .click()
 
@@ -56,5 +56,12 @@ describe('Esperas...', () => {
 
         cy.get('#lista li span', { timeout: 30000 })
             .should('have.length', 2)
+    })
+
+    it.only('Click Retry', () => {
+        cy.get('#buttonCount')
+            .click()
+            .click()
+            .should('have.value', '111')
     })
 })

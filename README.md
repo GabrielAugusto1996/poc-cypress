@@ -24,3 +24,11 @@ Adicione o seguinte script no seu arquivo de **package.json**:
 "cypress:open": "cypress open"
 
 Em seguida execute o comando: npm run cypress:open
+
+
+### Curiosidades
+
+Retry: Os comandos do Cypress executa automaticamente várias tentativas até que a assertiva funcione ou que de timeout.
+
+Timeout: Por default o Cypress tem um timeout de 4 segundos, podendo ser alterado no "cypress.json" com a propriedade
+"defaultCommandTimeout", vale ressaltar que o tempo para a configuração é de milisegundos.
