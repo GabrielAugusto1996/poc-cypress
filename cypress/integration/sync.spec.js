@@ -51,7 +51,15 @@ describe('Esperas...', () => {
         cy.get('#buttonDelay')
             .click()
 
-        cy.get('#novoCampo')
+        cy.get('#novoCampo', { timeout: 6000 })
             .should('exist')
+
+        cy.get('#buttonListDOM')
+            .click()
+
+        cy.wait(5000) //Recomendado não utilizar o 'wait', pois não é o tempo esperado sempre pela aplicação.
+
+        cy.get('#lista li span')
+            .should('contain', 'Item 2')
     })
 })
