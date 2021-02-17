@@ -32,7 +32,7 @@ describe('Esperas...', () => {
             .type('funciona')
     })
 
-    it.only('Uso do find', () => {
+    it('Uso do find', () => {
         cy.get('#buttonList')
             .click()
 
@@ -45,5 +45,13 @@ describe('Esperas...', () => {
             .should('contain', 'Item 1')
             .and('contain', 'Item 1')
 
+    })
+
+    it.only('Uso do timeout', () => {
+        cy.get('#buttonDelay')
+            .click()
+
+        cy.get('#novoCampo', { timeout: 1000 })
+            .should('exist')
     })
 })
