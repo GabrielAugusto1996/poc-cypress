@@ -46,7 +46,7 @@ describe('Helpers...', () => {
         }).should('be.equal', 2)
     })
 
-    it.only('Its...', () => {
+    it('Its...', () => {
         const obj = { nome: 'User', idade: 20 }
 
         cy.wrap(obj).should('have.property', 'nome', 'User')
@@ -58,5 +58,26 @@ describe('Helpers...', () => {
         cy.wrap(obj2).its('endereco.rua').should('contain', 'bobos')
 
         cy.title().its('length').should('be.equal', 20)
+    })
+
+    it.only('Invoke...', () => {
+        const getValue = () => 1;
+        const soma = (a, b) => a + b;
+
+        cy.wrap({ fn: getValue })
+            .invoke('fn')
+                .should('be.equal', 1)
+
+        cy.wrap( {fn : soma })
+            .invoke('fn', 3, 5)
+                .should('be.equal', 8)
+
+        cy.get('#formNome')
+            .invoke('val', 'Texto via invoke')
+        
+        cy.window().invoke('alert', 'Dá pra ver?')
+
+        cy.get('#resultado')
+            .invoke('html', '<input type="button" value="hacked" />')
     })
 })
