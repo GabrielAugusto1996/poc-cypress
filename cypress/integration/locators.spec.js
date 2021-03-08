@@ -13,8 +13,11 @@ describe('Work with basic elements', () => {
         cy.reload()
     })
 
-    it('', () => {
-        
+    it('Using Jquery Selector', () => {
+        cy.get('table#tabelaUsuarios > tbody > tr:eq(0) td:nth-child(3) > input').click()
     })
 
 })
+
+//Curiosidade, quando você utiliza o eq, a sua busca irá começar na posição '0' enquanto o nth-child a sua busca irá começar na posicação '1'
+//Mais detalhes: https://www.w3schools.com/jquery/jquery_ref_selectors.asp
