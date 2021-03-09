@@ -17,6 +17,10 @@ describe('Work with basic elements', () => {
         cy.get('table#tabelaUsuarios > tbody > tr:eq(0) td:nth-child(3) > input').click()
     })
 
+    it('Using X-Path', () => {
+        cy.xpath('//input')
+    })
+
 })
 
 //Curiosidade, quando você utiliza o eq, a sua busca irá começar na posição '0' enquanto o nth-child a sua busca irá começar na posicação '1'
