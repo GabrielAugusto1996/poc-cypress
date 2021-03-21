@@ -14,10 +14,11 @@ describe('Work with alerts', () => {
     })
 
     it('Alert', () => {
-        cy.get('#alert').click()
-        cy.on('window:alert', msg => {
-            expect(msg).to.be.equal('Alert Simples')
-        })
+        cy.clickAlert('#alert', 'Alert Simples')
+        // cy.get('#alert').click()
+        // cy.on('window:alert', msg => {
+        //     expect(msg).to.be.equal('Alert Simples')
+        // })
     })
 
     it('Alert com mock', () => {
@@ -55,7 +56,7 @@ describe('Work with alerts', () => {
         cy.get('#confirm').click()
     })
 
-    it.only('Prompt', () => {
+    it('Prompt', () => {
         cy.window().then(win => {
             cy.stub(win, 'prompt')
                 .as('prompt')
