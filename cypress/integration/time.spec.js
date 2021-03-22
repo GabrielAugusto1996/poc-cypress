@@ -1,6 +1,6 @@
 /// <reference types = "cypress" />
 
-describe('Work with alerts', () => {
+describe('Work with Time', () => {
 
     //Executa antes de todos os testes
     before(() => {
@@ -16,5 +16,19 @@ describe('Work with alerts', () => {
 
         cy.get('#buttonNow').click()
         cy.get('#resultado > span').should('contain', '10/04/2012')
+    })
+
+    it.only('Goes to the future', () => {
+        cy.get('#buttonTimePassed').click()
+
+        cy.get('#resultado > span').invoke('text').should('gt', 15731)
+
+        cy.clock()
+        cy.get('#buttonTimePassed').click()
+        cy.get('#resultado > span').invoke('text').should('lte', 0)
+
+        cy.tick(5000)
+        cy.get('#buttonTimePassed').click()
+        cy.get('#resultado > span').invoke('text').should('gte', 5000)
     })
 })
