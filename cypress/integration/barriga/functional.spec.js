@@ -23,4 +23,10 @@ describe('Should test at a functional level', () => {
         cy.get(loc.CONTAS.BTN_SALVAR).click()
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Conta atualizada')
     })
+
+    it('Should not create an account with same name', () => {
+        cy.acessarMenuConta()
+        cy.inserirConta('Conta de teste')
+        cy.get(loc.MESSAGE).should('exist').and('contain', 'Request failed with status code 400')
+    })
 })
