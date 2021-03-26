@@ -2,6 +2,7 @@
 
 import loc from '../../support/locators'
 import '../../support/commandsConta'
+import '../../support/commandsMovimentacao'
 
 describe('Should test at a functional level', () => {
 
@@ -28,5 +29,13 @@ describe('Should test at a functional level', () => {
         cy.acessarMenuConta()
         cy.inserirConta('Conta de teste')
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Request failed with status code 400')
+    })
+
+    it('Should create a new movimentation', () => {
+        cy.acessarMenuMovimentacao()
+        cy.inserirMovimentacao('Nova Movimentação', 15.42, 'Gabriel')
+        cy.get(loc.MESSAGE).should('exist').and('contain', 'Movimentação inserida')
+        cy.get(loc.EXTRATO.LINHAS).should('have.length', 7)
+        cy.xpath(loc.EXTRATO.XP_BUSCA_ELEMENTO).should('exist')
     })
 })
