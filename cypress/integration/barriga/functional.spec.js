@@ -29,4 +29,18 @@ describe('Should test at a functional level', () => {
             .should('exist')
             .and('contain', 'Conta inserida')
     })
+
+    it.only('Should update an account', () => {
+        cy.get('[data-test=menu-settings] > .fas').click()
+        cy.get('[href="/contas"]').click()
+
+        cy.xpath("//table//td[contains(., 'Conta de teste')]/..//i[@class='far fa-edit']")
+            .click()
+
+        cy.get('.btn').click()
+
+        cy.get('.toast-message')
+            .should('exist')
+            .and('contain', 'Conta atualizada')
+    })
 })
