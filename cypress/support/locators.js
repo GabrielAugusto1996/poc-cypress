@@ -9,7 +9,8 @@ const locators = {
         CONTAS: '[href="/contas"]',
         RESET: '[href="/reset"]',
         MOVIMENTACOES: '[data-test=menu-movimentacao] > .fas',
-        HOME: '[href="/"]'
+        HOME: '[href="/"]',
+        EXTRATO: '[data-test=menu-extrato] > .fas'
     },
     CONTAS: {
         NOME: '[data-test=nome]',
@@ -25,7 +26,8 @@ const locators = {
     },
     EXTRATO: {
         LINHAS: '.list-group > li',
-        FN_XP_BUSCA_ELEMENTO: (nomeMovimentacao, valorMovimentacao) => `//span[contains(.,'${nomeMovimentacao}')]/following-sibling::small[contains(.,'${valorMovimentacao}')]`
+        FN_XP_BUSCA_ELEMENTO: (nomeMovimentacao, valorMovimentacao) => `//span[contains(.,'${nomeMovimentacao}')]/following-sibling::small[contains(.,'${valorMovimentacao}')]`,
+        FN_XP_BUSCA_ELEMENTO_EXCLUSAO: (nomeMovimentacao) => `//span[contains(., '${nomeMovimentacao}')]/../../..//i[@class='far fa-trash-alt']`
     },
     HOME: {
         FN_XP_ENCONTRAR_CONTA: (nomeConta) => `//td[contains(., '${nomeConta}')]`

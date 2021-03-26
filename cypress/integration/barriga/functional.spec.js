@@ -46,4 +46,10 @@ describe('Should test at a functional level', () => {
         cy.wait(500)
         cy.xpath(loc.HOME.FN_XP_ENCONTRAR_CONTA('Conta para alterar')).should('exist')
     })
+
+    it('Should remove a transaction', () => {
+        cy.get(loc.MENU.EXTRATO).click()
+        cy.xpath(loc.EXTRATO.FN_XP_BUSCA_ELEMENTO_EXCLUSAO('Nova Movimentação')).click()
+        cy.get(loc.MESSAGE).should('exist').and('contain', 'Movimentação removida')
+    })
 })
