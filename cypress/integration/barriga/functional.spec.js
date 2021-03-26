@@ -20,22 +20,30 @@ describe('Should test at a functional level', () => {
 
     it('Should update an account', () => {
         cy.acessarMenuConta()
-        cy.xpath(loc.CONTAS.XP_BTN_ALTERAR).click()
+        cy.get(loc.CONTAS.NOME).clear()
+        cy.xpath(loc.CONTAS.FN_XP_BTN_ALTERAR('Conta de teste')).click()
+        cy.get(loc.CONTAS.NOME).type('Conta para alterar')
         cy.get(loc.CONTAS.BTN_SALVAR).click()
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Conta atualizada')
     })
 
     it('Should not create an account with same name', () => {
         cy.acessarMenuConta()
-        cy.inserirConta('Conta de teste')
+        cy.inserirConta('Conta para alterar')
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Request failed with status code 400')
     })
 
     it('Should create a new movimentation', () => {
         cy.acessarMenuMovimentacao()
-        cy.inserirMovimentacao('Nova Movimentação', 15.42, 'Gabriel')
+        cy.inserirMovimentacao('Nova Movimentação', 15.42, 'Gabriel', true, 'Conta para alterar')
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Movimentação inserida')
         cy.get(loc.EXTRATO.LINHAS).should('have.length', 7)
-        cy.xpath(loc.EXTRATO.XP_BUSCA_ELEMENTO).should('exist')
+        cy.xpath(loc.EXTRATO.FN_XP_BUSCA_ELEMENTO('Nova Movimentação', 15)).should('exist')
+    })
+
+    it('Should get balance', () => {
+        cy.get(loc.MENU.HOME).click()
+        cy.wait(500)
+        cy.xpath(loc.HOME.FN_XP_ENCONTRAR_CONTA('Conta para alterar')).should('exist')
     })
 })
