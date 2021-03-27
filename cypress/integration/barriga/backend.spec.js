@@ -105,6 +105,20 @@ describe('Should test at a functional level', () => {
     })
 
     it('Should get balance', () => {
+        cy.request({
+            method: 'GET',
+            url: '/saldo',
+            headers: {
+                Authorization: `JWT ${token}`
+            }
+        }).then(res => {
+            let saldoConta = null
+            res.body.forEach(c => {
+                if (c.conta === 'Conta para saldo') saldoConta = c.saldo
+            })
+
+            expect(saldoConta).to.be.equal('534.00')
+        })
     })
 
     it('Should remove a transaction', () => {
