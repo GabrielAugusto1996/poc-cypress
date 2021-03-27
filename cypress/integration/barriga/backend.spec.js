@@ -46,16 +46,7 @@ describe('Should test at a functional level', () => {
     })
 
     it('Should update an account', () => {
-        cy.request({
-            method: 'GET',
-            url: '/contas',
-            headers: {
-                Authorization: `JWT ${token}`
-            },
-            qs: {
-                nome: 'Conta para alterar'
-            }
-        }).then(res => {
+        cy.getAccountByName('Conta para alterar', token).then(res => {
             cy.request({
                 method: 'PUT',
                 url: `/contas/${res.body[0].id}`,
@@ -89,6 +80,28 @@ describe('Should test at a functional level', () => {
     })
 
     it('Should create a new movimentation', () => {
+        cy.getAccountByName('Conta para movimentacoes', token).then(res => {
+            cy.request({
+                method: 'POST',
+                url: '/transacoes',
+                body: {
+                  conta_id: res.body[0].id,
+                  data_pagamento: Cypress.moment().add({days: 1}).format('DD/MM/YYYY'),
+                  data_transacao: Cypress.moment().format('DD/MM/YYYY'),
+                  descricao: "desc",
+                  envolvido: "inter",
+                  status: true,
+                  tipo: "REC",
+                  valor: "123"
+                },
+                headers: {
+                    Authorization: `JWT ${token}`
+                }
+            }).as('response')
+        })
+
+        cy.get('@response').its('status').should('be.equal', 201)
+        cy.get('@response').its('body.id').should('exist')
     })
 
     it('Should get balance', () => {
