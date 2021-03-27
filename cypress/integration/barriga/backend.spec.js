@@ -2,7 +2,12 @@
 
 describe('Should test at a functional level', () => {
 
+    let token
+
     before(() => {
+        cy.getToken('biga00145@gmail.com', 'Zelda-123').then($token => {
+            token = $token
+        })
     })
 
     beforeEach(() => {
@@ -23,24 +28,14 @@ describe('Should test at a functional level', () => {
     it('Should create an account', () => {
         cy.request({
             method: 'POST',
-            url: 'http://barrigarest.wcaquino.me/signin',
+            url: 'http://barrigarest.wcaquino.me/contas',
             body: {
-                email: "biga00145@gmail.com",
-                senha: "Zelda-123",
-                redirecionar: false
+                nome: "Conta via rest"
+            },
+            headers: {
+                Authorization: `JWT ${token}`
             }
-        }).its('body.token').should('not.be.empty').then(token => {
-            cy.request({
-                method: 'POST',
-                url: 'http://barrigarest.wcaquino.me/contas',
-                body: {
-                    nome: "Conta via rest"
-                },
-                headers: {
-                    Authorization: `JWT ${token}`
-                }
-            }).as('response')
-        })
+        }).as('response')
 
         cy.get('@response').then(res => {
             expect(res.status).to.be.equal(201)
