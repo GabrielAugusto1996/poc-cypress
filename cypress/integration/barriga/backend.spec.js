@@ -11,6 +11,7 @@ describe('Should test at a functional level', () => {
     })
 
     beforeEach(() => {
+        cy.resetRest(token)
     })
 
     it('Should make a login', () => {
@@ -26,7 +27,6 @@ describe('Should test at a functional level', () => {
     })
 
     it('Should create an account', () => {
-        cy.resetRest(token)
         cy.request({
             method: 'POST',
             url: '/contas',
@@ -46,7 +46,6 @@ describe('Should test at a functional level', () => {
     })
 
     it('Should update an account', () => {
-        cy.resetRest(token)
         cy.request({
             method: 'GET',
             url: '/contas',
@@ -73,6 +72,20 @@ describe('Should test at a functional level', () => {
     })
 
     it('Should not create an account with same name', () => {
+        cy.request({
+            method: 'POST',
+            url: '/contas',
+            body: {
+                nome: "Conta mesmo nome"
+            },
+            headers: {
+                Authorization: `JWT ${token}`
+            },
+            failOnStatusCode: false
+        }).then(res => {
+            expect(res.status).to.be.equal(400)
+            expect(res.body.error).to.be.equal('Já existe uma conta com esse nome!')
+        })
     })
 
     it('Should create a new movimentation', () => {
