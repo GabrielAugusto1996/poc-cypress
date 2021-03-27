@@ -11,7 +11,7 @@ describe('Should test at a functional level', () => {
     })
 
     beforeEach(() => {
-        cy.resetRest(token)
+        cy.resetRest()
     })
 
     it('Should make a login', () => {
@@ -32,9 +32,6 @@ describe('Should test at a functional level', () => {
             url: '/contas',
             body: {
                 nome: "Conta via rest"
-            },
-            headers: {
-                Authorization: `JWT ${token}`
             }
         }).as('response')
 
@@ -46,15 +43,12 @@ describe('Should test at a functional level', () => {
     })
 
     it('Should update an account', () => {
-        cy.getAccountByName('Conta para alterar', token).then(res => {
+        cy.getAccountByName('Conta para alterar').then(res => {
             cy.request({
                 method: 'PUT',
                 url: `/contas/${res.body[0].id}`,
                 body: {
                     nome: "conta alterada via rest"
-                },
-                headers: {
-                    Authorization: `JWT ${token}`
                 }
             }).as('response')
         })
@@ -69,9 +63,6 @@ describe('Should test at a functional level', () => {
             body: {
                 nome: "Conta mesmo nome"
             },
-            headers: {
-                Authorization: `JWT ${token}`
-            },
             failOnStatusCode: false
         }).then(res => {
             expect(res.status).to.be.equal(400)
@@ -80,7 +71,7 @@ describe('Should test at a functional level', () => {
     })
 
     it('Should create a new movimentation', () => {
-        cy.getAccountByName('Conta para movimentacoes', token).then(res => {
+        cy.getAccountByName('Conta para movimentacoes').then(res => {
             cy.request({
                 method: 'POST',
                 url: '/transacoes',
@@ -93,9 +84,6 @@ describe('Should test at a functional level', () => {
                   status: true,
                   tipo: "REC",
                   valor: "123"
-                },
-                headers: {
-                    Authorization: `JWT ${token}`
                 }
             }).as('response')
         })
@@ -107,10 +95,7 @@ describe('Should test at a functional level', () => {
     it('Should get balance', () => {
         cy.request({
             method: 'GET',
-            url: '/saldo',
-            headers: {
-                Authorization: `JWT ${token}`
-            }
+            url: '/saldo'
         }).then(res => {
             let saldoConta = null
             res.body.forEach(c => {
@@ -125,19 +110,13 @@ describe('Should test at a functional level', () => {
         cy.request({
             method: 'GET',
             url: '/transacoes',
-            headers: {
-                Authorization: `JWT ${token}`
-            },
             qs: {
                 descricao: 'Movimentacao para exclusao'
             }
         }).then(res => {
             cy.request({
                 method: 'DELETE',
-                url: `/transacoes/${res.body[0].id}`,
-                headers: {
-                    Authorization: `JWT ${token}`
-                }
+                url: `/transacoes/${res.body[0].id}`
             }).its('status').should('be.equal', 204)
         })
     })
