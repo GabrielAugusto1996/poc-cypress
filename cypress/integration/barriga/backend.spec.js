@@ -16,7 +16,7 @@ describe('Should test at a functional level', () => {
     it('Should make a login', () => {
         cy.request({
             method: 'POST',
-            url: 'http://barrigarest.wcaquino.me/signin',
+            url: '/signin',
             body: {
                 email: "biga00145@gmail.com",
                 senha: "Zelda-123",
@@ -26,9 +26,10 @@ describe('Should test at a functional level', () => {
     })
 
     it('Should create an account', () => {
+        cy.resetRest(token)
         cy.request({
             method: 'POST',
-            url: 'http://barrigarest.wcaquino.me/contas',
+            url: '/contas',
             body: {
                 nome: "Conta via rest"
             },

@@ -29,17 +29,17 @@ import loc from '../support/locators'
 
 Cypress.Commands.add('clickAlert', (locator, message) => {
     cy.get(locator).click()
-        cy.on('window:alert', msg => {
-            expect(msg).to.be.equal(message)
-        })
+    cy.on('window:alert', msg => {
+        expect(msg).to.be.equal(message)
+    })
 })
 
 Cypress.Commands.add('login', (user, password) => {
     cy.visit('https://barrigareact.wcaquino.me/')
-        cy.get(loc.LOGIN.USER).type(user)
-        cy.get(loc.LOGIN.PASSWORD).type(password)
-        cy.get(loc.LOGIN.BTN_LOGIN).click()
-        cy.get(loc.MESSAGE).should('exist').and('contain', 'Bem vindo,')
+    cy.get(loc.LOGIN.USER).type(user)
+    cy.get(loc.LOGIN.PASSWORD).type(password)
+    cy.get(loc.LOGIN.BTN_LOGIN).click()
+    cy.get(loc.MESSAGE).should('exist').and('contain', 'Bem vindo,')
 })
 
 Cypress.Commands.add('resetApp', () => {
@@ -50,14 +50,26 @@ Cypress.Commands.add('resetApp', () => {
 Cypress.Commands.add('getToken', (user, password) => {
     cy.request({
         method: 'POST',
-        url: 'http://barrigarest.wcaquino.me/signin',
+        url: '/signin',
         body: {
             email: user,
             senha: password,
             redirecionar: false
         }
     }).its('body.token').should('not.be.empty')
-    .then(token => {
-        return token
+        .then(token => {
+            return token
+        })
+})
+
+Cypress.Commands.add('resetRest', (token) => {
+    cy.request({
+        method: 'GET',
+        url: '/reset',
+        headers: {
+            Authorization: `JWT ${token}`
+        }
+    }).then(res => {
+        expect(res.status).to.be.equal(200)
     })
 })
