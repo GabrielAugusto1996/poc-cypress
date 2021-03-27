@@ -46,6 +46,30 @@ describe('Should test at a functional level', () => {
     })
 
     it('Should update an account', () => {
+        cy.resetRest(token)
+        cy.request({
+            method: 'GET',
+            url: '/contas',
+            headers: {
+                Authorization: `JWT ${token}`
+            },
+            qs: {
+                nome: 'Conta para alterar'
+            }
+        }).then(res => {
+            cy.request({
+                method: 'PUT',
+                url: `/contas/${res.body[0].id}`,
+                body: {
+                    nome: "conta alterada via rest"
+                },
+                headers: {
+                    Authorization: `JWT ${token}`
+                }
+            }).as('response')
+        })
+
+        cy.get('@response').its('status').should('be.equal', 200)
     })
 
     it('Should not create an account with same name', () => {
