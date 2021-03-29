@@ -145,7 +145,7 @@ describe('Should test at a frontend level', () => {
             response: 'fixture:movimentacaoSalva'
         }).as('consultaMovimentacoes')
 
-        cy.acessarMenuMovimentacao()        
+        cy.acessarMenuMovimentacao()
         cy.inserirMovimentacao('Nova Movimentação', 15.42, 'Gabriel', true, 'Banco')
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Movimentação inserida')
         cy.get(loc.EXTRATO.LINHAS).should('have.length', 7)
@@ -217,5 +217,20 @@ describe('Should test at a frontend level', () => {
 
         cy.wait('@saveConta').its('request.body.nome').should('not.be.empty')
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Conta inserida')
+    })
+
+    it.only('Should test the responsiveness', () => {
+        cy.get('[data-test=menu-home]').should('exist')
+            .and('be.visible')
+
+        //Você poderá utilizar também os tamanhos pré definidos na documentação
+        //do Cypress, como por exemplo: cy.viewport('iphone-5')
+        cy.viewport(500, 700)
+
+        cy.get('[data-test=menu-home]').should('exist')
+            .and('be.not.visible')
+
+        cy.get('.navbar-toggler-icon').should('exist')
+            .and('be.visible')
     })
 })
