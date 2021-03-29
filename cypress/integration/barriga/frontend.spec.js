@@ -170,7 +170,7 @@ describe('Should test at a frontend level', () => {
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Movimentação removida')
     })
 
-    it.only('Should validate data send to create an account', () => {
+    it('Should validate data send to create an account', () => {
         cy.route({
             method: 'POST',
             url: '/contas',
@@ -179,11 +179,11 @@ describe('Should test at a frontend level', () => {
                 nome: 'Conta de teste',
                 visivel: true,
                 usuario_id: 1
-            },
-            onRequest: req => {
+            }
+            /*onRequest: req => {
                 expect(req.request.body.nome).to.be.not.null
                 expect(req.request.headers).to.have.property('Authorization')
-            }
+            }*/
         }).as('saveConta')
 
         cy.acessarMenuConta()
@@ -215,7 +215,7 @@ describe('Should test at a frontend level', () => {
 
         cy.inserirConta('{CONTROL}')
 
-        //cy.wait('@saveConta').its('request.body.nome').should('not.be.empty')
+        cy.wait('@saveConta').its('request.body.nome').should('not.be.empty')
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Conta inserida')
     })
 })
