@@ -39,11 +39,66 @@ describe('Should test at a frontend level', () => {
             ]
         }).as('saldo')
         cy.login('biga00145@gmail.com', 'senha errada')
-        cy.resetApp()
     })
 
     it('Should create an account', () => {
+        cy.route({
+            method: 'GET',
+            url: '/contas',
+            response: [
+                {
+                    id: 1,
+                    nome: 'Carteira',
+                    visivel: true,
+                    usuario_id: 1
+                },
+                {
+                    id: 2,
+                    nome: 'Banco',
+                    visivel: true,
+                    usuario_id: 1
+                }
+            ]
+        }).as('contas')
+
+        cy.route({
+            method: 'POST',
+            url: '/contas',
+            response: {
+                id: 3,
+                nome: 'Conta de teste',
+                visivel: true,
+                usuario_id: 1
+            }
+        }).as('saveConta')
+
         cy.acessarMenuConta()
+
+        cy.route({
+            method: 'GET',
+            url: '/contas',
+            response: [
+                {
+                    id: 1,
+                    nome: 'Carteira',
+                    visivel: true,
+                    usuario_id: 1
+                },
+                {
+                    id: 2,
+                    nome: 'Banco',
+                    visivel: true,
+                    usuario_id: 1
+                },
+                {
+                    id: 3,
+                    nome: 'Conta de teste',
+                    visivel: true,
+                    usuario_id: 1
+                }
+            ]
+        }).as('contaSave')
+
         cy.inserirConta('Conta de teste')
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Conta inserida')
     })
