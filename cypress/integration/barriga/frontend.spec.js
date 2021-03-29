@@ -118,7 +118,7 @@ describe('Should test at a frontend level', () => {
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Request failed with status code 400')
     })
 
-    it.only('Should create a transaction', () => {
+    it('Should create a transaction', () => {
         cy.route({
             method: 'POST',
             url: '/transacoes',
@@ -152,10 +152,9 @@ describe('Should test at a frontend level', () => {
         cy.xpath(loc.EXTRATO.FN_XP_BUSCA_ELEMENTO('Nova Movimentação', 15)).should('exist')
     })
 
-    it('Should get balance', () => {
+    it.only('Should get balance', () => {
         cy.get(loc.MENU.HOME).click()
-        cy.wait(500)
-        cy.xpath(loc.HOME.FN_XP_ENCONTRAR_CONTA('Conta para saldo')).should('exist')
+        cy.xpath(loc.HOME.FN_XP_ENCONTRAR_CONTA('Carteira')).should('exist')
     })
 
     it('Should remove a transaction', () => {
