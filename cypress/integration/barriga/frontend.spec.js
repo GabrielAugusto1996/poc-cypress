@@ -6,7 +6,10 @@ import '../../support/commandsMovimentacao'
 
 describe('Should test at a frontend level', () => {
 
-    //Executa antes de todos os testes
+    after(() => {
+        cy.clearLocalStorage()
+    })
+
     before(() => {
         cy.server()
         cy.route({
