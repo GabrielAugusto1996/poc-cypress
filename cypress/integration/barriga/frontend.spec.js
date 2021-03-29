@@ -103,7 +103,16 @@ describe('Should test at a frontend level', () => {
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Conta atualizada')
     })
 
-    it('Should not create an account with same name', () => {
+    it.only('Should not create an account with same name', () => {
+        cy.route({
+            method: 'POST',
+            url: '/contas',
+            response: {
+               error: 'Já existe uma conta com esse nome!'
+            },
+            status: 400
+        }).as('saveContaMesmoNome')
+
         cy.acessarMenuConta()
         cy.inserirConta('Conta mesmo nome')
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Request failed with status code 400')
