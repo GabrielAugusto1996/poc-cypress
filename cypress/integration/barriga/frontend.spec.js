@@ -103,12 +103,12 @@ describe('Should test at a frontend level', () => {
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Conta atualizada')
     })
 
-    it.only('Should not create an account with same name', () => {
+    it('Should not create an account with same name', () => {
         cy.route({
             method: 'POST',
             url: '/contas',
             response: {
-               error: 'Já existe uma conta com esse nome!'
+                error: 'Já existe uma conta com esse nome!'
             },
             status: 400
         }).as('saveContaMesmoNome')
@@ -118,9 +118,147 @@ describe('Should test at a frontend level', () => {
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Request failed with status code 400')
     })
 
-    it('Should create a new movimentation', () => {
-        cy.acessarMenuMovimentacao()
-        cy.inserirMovimentacao('Nova Movimentação', 15.42, 'Gabriel', true, 'Conta para movimentacoes')
+    it.only('Should create a transaction', () => {
+        cy.route({
+            method: 'POST',
+            url: '/transacoes',
+            response: {
+                "id": 465845,
+                "descricao": "Nova Movimentação",
+                "envolvido": "Gabriel",
+                "observacao": null,
+                "tipo": "REC",
+                "data_transacao": "2021-03-29T03:00:00.000Z",
+                "data_pagamento": "2021-03-29T03:00:00.000Z",
+                "valor": "333.00",
+                "status": true,
+                "conta_id": 500033,
+                "usuario_id": 13909,
+                "transferencia_id": null,
+                "parcelamento_id": null
+            }
+        }).as('salvaMovimentacao')
+
+        cy.route({
+            method: 'GET',
+            url: '/extrato/**',
+            response: [
+                {
+                    "conta": "Conta com movimentacao",
+                    "id": 461394,
+                    "descricao": "Movimentacao de conta",
+                    "envolvido": "BBB",
+                    "observacao": null,
+                    "tipo": "DESP",
+                    "data_transacao": "2021-03-27T03:00:00.000Z",
+                    "data_pagamento": "2021-03-27T03:00:00.000Z",
+                    "valor": "-1500.00",
+                    "status": true,
+                    "conta_id": 500036,
+                    "usuario_id": 13909,
+                    "transferencia_id": null,
+                    "parcelamento_id": null
+                },
+                {
+                    "conta": "Conta para saldo",
+                    "id": 461395,
+                    "descricao": "Movimentacao 1, calculo saldo",
+                    "envolvido": "CCC",
+                    "observacao": null,
+                    "tipo": "REC",
+                    "data_transacao": "2021-03-27T03:00:00.000Z",
+                    "data_pagamento": "2021-03-27T03:00:00.000Z",
+                    "valor": "3500.00",
+                    "status": false,
+                    "conta_id": 500037,
+                    "usuario_id": 13909,
+                    "transferencia_id": null,
+                    "parcelamento_id": null
+                },
+                {
+                    "conta": "Conta para saldo",
+                    "id": 461396,
+                    "descricao": "Movimentacao 2, calculo saldo",
+                    "envolvido": "DDD",
+                    "observacao": null,
+                    "tipo": "DESP",
+                    "data_transacao": "2021-03-27T03:00:00.000Z",
+                    "data_pagamento": "2021-03-27T03:00:00.000Z",
+                    "valor": "-1000.00",
+                    "status": true,
+                    "conta_id": 500037,
+                    "usuario_id": 13909,
+                    "transferencia_id": null,
+                    "parcelamento_id": null
+                },
+                {
+                    "conta": "Conta para saldo",
+                    "id": 461397,
+                    "descricao": "Movimentacao 3, calculo saldo",
+                    "envolvido": "EEE",
+                    "observacao": null,
+                    "tipo": "REC",
+                    "data_transacao": "2021-03-27T03:00:00.000Z",
+                    "data_pagamento": "2021-03-27T03:00:00.000Z",
+                    "valor": "1534.00",
+                    "status": true,
+                    "conta_id": 500037,
+                    "usuario_id": 13909,
+                    "transferencia_id": null,
+                    "parcelamento_id": null
+                },
+                {
+                    "conta": "Conta para extrato",
+                    "id": 461398,
+                    "descricao": "Movimentacao para extrato",
+                    "envolvido": "FFF",
+                    "observacao": null,
+                    "tipo": "DESP",
+                    "data_transacao": "2021-03-27T03:00:00.000Z",
+                    "data_pagamento": "2021-03-27T03:00:00.000Z",
+                    "valor": "-220.00",
+                    "status": true,
+                    "conta_id": 500038,
+                    "usuario_id": 13909,
+                    "transferencia_id": null,
+                    "parcelamento_id": null
+                },
+                {
+                    "conta": "Conta para alterar",
+                    "id": 465845, 
+                    "descricao": "Nova Movimentação",
+                    "envolvido": "Gabriel",
+                    "observacao": null,
+                    "tipo": "REC",
+                    "data_transacao": "2021-03-29T03:00:00.000Z",
+                    "data_pagamento": "2021-03-29T03:00:00.000Z",
+                    "valor": "15.00",
+                    "status": true,
+                    "conta_id": 500033,
+                    "usuario_id": 13909,
+                    "transferencia_id": null,
+                    "parcelamento_id": null
+                },
+                {
+                    "id": 465845,
+                    "descricao": "Desc",
+                    "envolvido": "Gabriel",
+                    "observacao": null,
+                    "tipo": "REC",
+                    "data_transacao": "2021-03-29T03:00:00.000Z",
+                    "data_pagamento": "2021-03-29T03:00:00.000Z",
+                    "valor": "123.00",
+                    "status": true,
+                    "conta_id": 500033,
+                    "usuario_id": 13909,
+                    "transferencia_id": null,
+                    "parcelamento_id": null
+                }
+            ]
+        }).as('consultaMovimentacoes')
+
+        cy.acessarMenuMovimentacao()        
+        cy.inserirMovimentacao('Nova Movimentação', 15.42, 'Gabriel', true, 'Banco')
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Movimentação inserida')
         cy.get(loc.EXTRATO.LINHAS).should('have.length', 7)
         cy.xpath(loc.EXTRATO.FN_XP_BUSCA_ELEMENTO('Nova Movimentação', 15)).should('exist')
