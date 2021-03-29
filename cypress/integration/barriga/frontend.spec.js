@@ -3,6 +3,7 @@
 import loc from '../../support/locators'
 import '../../support/commandsConta'
 import '../../support/commandsMovimentacao'
+import buildEnv from '../../support/buildEnv'
 
 describe('Should test at a frontend level', () => {
 
@@ -11,56 +12,15 @@ describe('Should test at a frontend level', () => {
     })
 
     before(() => {
-        cy.server()
-        cy.route({
-            method: 'POST',
-            url: '/signin',
-            response: {
-                id: 1000,
-                nome: 'Usuario falso',
-                token: 'Um string muito grande que não deveria ser aceito, mas na verdade será aceito'
-            }
-        }).as('signin')
-
-        cy.route({
-            method: 'GET',
-            url: '/saldo',
-            response: [
-                {
-                    conta_id: 999,
-                    conta: 'Carteira',
-                    saldo: '100.00'
-                },
-                {
-                    conta_id: 9909,
-                    conta: 'Banco',
-                    saldo: '100000000.00'
-                }
-            ]
-        }).as('saldo')
+        buildEnv()
         cy.login('biga00145@gmail.com', 'senha errada')
     })
 
-    it('Should create an account', () => {
-        cy.route({
-            method: 'GET',
-            url: '/contas',
-            response: [
-                {
-                    id: 1,
-                    nome: 'Carteira',
-                    visivel: true,
-                    usuario_id: 1
-                },
-                {
-                    id: 2,
-                    nome: 'Banco',
-                    visivel: true,
-                    usuario_id: 1
-                }
-            ]
-        }).as('contas')
+    beforeEach(() => {
+        cy.server()
+    })
 
+    it('Should create an account', () => {
         cy.route({
             method: 'POST',
             url: '/contas',
@@ -104,27 +64,6 @@ describe('Should test at a frontend level', () => {
     })
 
     it('Should update an account', () => {
-        cy.server()
-
-        cy.route({
-            method: 'GET',
-            url: '/contas',
-            response: [
-                {
-                    id: 1,
-                    nome: 'Carteira',
-                    visivel: true,
-                    usuario_id: 1
-                },
-                {
-                    id: 2,
-                    nome: 'Banco',
-                    visivel: true,
-                    usuario_id: 1
-                }
-            ]
-        }).as('contas')
-
         cy.route({
             method: 'PUT',
             url: '/contas/**',
