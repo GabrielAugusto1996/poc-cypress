@@ -69,7 +69,7 @@ const buildEnv = () => {
             {
                 "conta": "Conta para saldo",
                 "id": 461395,
-                "descricao": "Movimentacao 1, calculo saldo",
+                "descricao": "Movimentacao para exclusao",
                 "envolvido": "CCC",
                 "observacao": null,
                 "tipo": "REC",

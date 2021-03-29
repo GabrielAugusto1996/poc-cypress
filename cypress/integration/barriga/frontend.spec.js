@@ -152,12 +152,19 @@ describe('Should test at a frontend level', () => {
         cy.xpath(loc.EXTRATO.FN_XP_BUSCA_ELEMENTO('Nova Movimentação', 15)).should('exist')
     })
 
-    it.only('Should get balance', () => {
+    it('Should get balance', () => {
         cy.get(loc.MENU.HOME).click()
         cy.xpath(loc.HOME.FN_XP_ENCONTRAR_CONTA('Carteira')).should('exist')
     })
 
     it('Should remove a transaction', () => {
+        cy.route({
+            method: 'DELETE',
+            url: '/transacoes/**',
+            response: {},
+            status: 204
+        }).as('movimentacaoExclusao')
+
         cy.get(loc.MENU.EXTRATO).click()
         cy.xpath(loc.EXTRATO.FN_XP_BUSCA_ELEMENTO_EXCLUSAO('Movimentacao para exclusao')).click()
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Movimentação removida')
