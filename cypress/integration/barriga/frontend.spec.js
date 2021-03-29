@@ -1,0 +1,82 @@
+/// <reference types = "cypress" />
+
+import loc from '../../support/locators'
+import '../../support/commandsConta'
+import '../../support/commandsMovimentacao'
+
+describe('Should test at a frontend level', () => {
+
+    //Executa antes de todos os testes
+    before(() => {
+        cy.server()
+        cy.route({
+            method: 'POST',
+            url: '/signin',
+            response: {
+                id: 1000,
+                nome: 'Usuario falso',
+                token: 'Um string muito grande que não deveria ser aceito, mas na verdade será aceito'
+            }
+        }).as('signin')
+
+        cy.route({
+            method: 'GET',
+            url: '/saldo',
+            response: [
+                {
+                    conta_id: 999,
+                    conta: 'Carteira',
+                    saldo: '100.00'
+                },
+                {
+                    conta_id: 9909,
+                    conta: 'Banco',
+                    saldo: '100000000.00'
+                }
+            ]
+        }).as('saldo')
+        cy.login('biga00145@gmail.com', 'senha errada')
+        cy.resetApp()
+    })
+
+    it('Should create an account', () => {
+        cy.acessarMenuConta()
+        cy.inserirConta('Conta de teste')
+        cy.get(loc.MESSAGE).should('exist').and('contain', 'Conta inserida')
+    })
+
+    it('Should update an account', () => {
+        cy.acessarMenuConta()
+        cy.get(loc.CONTAS.NOME).clear()
+        cy.xpath(loc.CONTAS.FN_XP_BTN_ALTERAR('Conta para alterar')).click()
+        cy.get(loc.CONTAS.NOME).type('Conta para alterar')
+        cy.get(loc.CONTAS.BTN_SALVAR).click()
+        cy.get(loc.MESSAGE).should('exist').and('contain', 'Conta atualizada')
+    })
+
+    it('Should not create an account with same name', () => {
+        cy.acessarMenuConta()
+        cy.inserirConta('Conta mesmo nome')
+        cy.get(loc.MESSAGE).should('exist').and('contain', 'Request failed with status code 400')
+    })
+
+    it('Should create a new movimentation', () => {
+        cy.acessarMenuMovimentacao()
+        cy.inserirMovimentacao('Nova Movimentação', 15.42, 'Gabriel', true, 'Conta para movimentacoes')
+        cy.get(loc.MESSAGE).should('exist').and('contain', 'Movimentação inserida')
+        cy.get(loc.EXTRATO.LINHAS).should('have.length', 7)
+        cy.xpath(loc.EXTRATO.FN_XP_BUSCA_ELEMENTO('Nova Movimentação', 15)).should('exist')
+    })
+
+    it('Should get balance', () => {
+        cy.get(loc.MENU.HOME).click()
+        cy.wait(500)
+        cy.xpath(loc.HOME.FN_XP_ENCONTRAR_CONTA('Conta para saldo')).should('exist')
+    })
+
+    it('Should remove a transaction', () => {
+        cy.get(loc.MENU.EXTRATO).click()
+        cy.xpath(loc.EXTRATO.FN_XP_BUSCA_ELEMENTO_EXCLUSAO('Movimentacao para exclusao')).click()
+        cy.get(loc.MESSAGE).should('exist').and('contain', 'Movimentação removida')
+    })
+})
