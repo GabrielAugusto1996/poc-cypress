@@ -104,10 +104,62 @@ describe('Should test at a frontend level', () => {
     })
 
     it('Should update an account', () => {
+        cy.server()
+
+        cy.route({
+            method: 'GET',
+            url: '/contas',
+            response: [
+                {
+                    id: 1,
+                    nome: 'Carteira',
+                    visivel: true,
+                    usuario_id: 1
+                },
+                {
+                    id: 2,
+                    nome: 'Banco',
+                    visivel: true,
+                    usuario_id: 1
+                }
+            ]
+        }).as('contas')
+
+        cy.route({
+            method: 'PUT',
+            url: '/contas/**',
+            response: {
+                id: 1,
+                nome: 'Conta alterada',
+                visivel: true,
+                usuario_id: 1
+            }
+        }).as('contaAlterada')
+
         cy.acessarMenuConta()
+
+        cy.route({
+            method: 'GET',
+            url: '/contas',
+            response: [
+                {
+                    id: 1,
+                    nome: 'Conta alterada',
+                    visivel: true,
+                    usuario_id: 1
+                },
+                {
+                    id: 2,
+                    nome: 'Banco',
+                    visivel: true,
+                    usuario_id: 1
+                }
+            ]
+        }).as('contasAlterada')
+
         cy.get(loc.CONTAS.NOME).clear()
-        cy.xpath(loc.CONTAS.FN_XP_BTN_ALTERAR('Conta para alterar')).click()
-        cy.get(loc.CONTAS.NOME).type('Conta para alterar')
+        cy.xpath(loc.CONTAS.FN_XP_BTN_ALTERAR('Carteira')).click()
+        cy.get(loc.CONTAS.NOME).type('Conta alterada')
         cy.get(loc.CONTAS.BTN_SALVAR).click()
         cy.get(loc.MESSAGE).should('exist').and('contain', 'Conta atualizada')
     })
